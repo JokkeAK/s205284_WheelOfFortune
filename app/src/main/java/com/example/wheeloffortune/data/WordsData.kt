@@ -35,7 +35,7 @@ val vegetablesWords: Set<String> =
 val videoGamesWords: Set<String> =
     setOf(
         "TETRIS",
-        "BATTLEFIELD",
+        "DIABLO",
         "POKEMON"
     )
 

@@ -28,14 +28,21 @@ class GameViewModel : ViewModel() {
 
     private var currentWordLength: Int = 0
 
-    private var updatedCorrectGuesses: Int = 0
+    private var updatedCorrectGuessesNum: Int = 0
+    private var updatedCorrectGuesses: String = ""
+
     private var updatedScore: Int = 0
+    private var updatedUserGuess: String = ""
+    private var updatedLetter: String = ""
+
 
     private lateinit var updatedCorrectLetters: String
 
 
     var userGuess by mutableStateOf("")
     var correctCharToWrite by mutableStateOf("")
+
+    var lettersToReveal: String = ""
 
 
     //private val _charToWrite = MutableStateFlow("")
@@ -92,52 +99,39 @@ class GameViewModel : ViewModel() {
 
     fun updateUserGuess(guessedLetter: String) {
         //The player can only enter a single letter.
-        if (userGuess.isEmpty()) {
             userGuess = guessedLetter
-        }
-        //If user tries to enter another letter, the former input is deleted.
-        else {
-            userGuess = ""
-        }
     }
+
+
 
 
     fun checkUserGuess() {
 
-        correctCharToWrite = ""
-
-        if (userGuess.isBlank() || userGuess == " ") {
-            // User's guess is either blank or a space. Life and scores is not altered.
-            _uiState.update { currentState -> currentState.copy(
-                isGuessedLetterEmpty = true,
-                isGuessedLetterWrong = false,
-                isGuessedLetterRight = false) }
-
-
-        } else if (currentWord.contains(userGuess, ignoreCase = true)) {
+        if (currentWord.contains(userGuess, ignoreCase = true)) {
             // User's guess is correct, increase the score
             _uiState.update { currentState -> currentState.copy(
                 isGuessedLetterEmpty = false,
                 isGuessedLetterWrong = false,
                 isGuessedLetterRight = true,
+                //revealedLetter = userGuess
             ) }
 
-            updatedCorrectLetters = _uiState.value.correctLetters.plus(userGuess)
 
-            correctCharToWrite = _uiState.value.correctCharToWrite.plus("a")
 
-            //charToWrite = _uiState.value.correctCharToWrite.plus(userGuess)
 
-            //_charToWrite.value = userGuess
+
+            updatedCorrectGuesses = _uiState.value.correctGuesses.plus(userGuess)
 
             //Updates the amount of correct guesses the user has had so far in the game.
-            updatedCorrectGuesses = _uiState.value.correctGuesses.plus(currentWord.count{it == userGuess.first()})
+            updatedCorrectGuessesNum = _uiState.value.correctGuessesNum.plus(currentWord.count{it == userGuess.first()})
 
             //Updates the amount of points a player gets based on the number of correct letters guessed.
             updatedScore = _uiState.value.score.plus(scoreInc*(currentWord.count{it == userGuess.first()}))
 
+            updatedUserGuess = _uiState.value.userGuess.plus(userGuess)
 
-            updateGameState(updatedScore, updatedCorrectGuesses, updatedCorrectLetters, correctCharToWrite)
+            updateGameState(updatedScore, updatedCorrectGuessesNum, updatedUserGuess, updatedLetter, updatedCorrectGuesses)
+
 
         } else {
             _uiState.update { currentState -> currentState.copy(
@@ -156,17 +150,17 @@ class GameViewModel : ViewModel() {
 
 
     //Updates the game state based on correct answer.
-    private fun updateGameState(updatedScore: Int, updatedCorrectGuesses: Int, updatedCorrectLetters: String, correctCharToWrite: String) {
-        if(updatedCorrectGuesses >= currentWordLength){
+    private fun updateGameState(updatedScore: Int, updatedCorrectGuessesNum: Int, updatedUserGuess: String, updatedLetter: String, updatedCorrectGuesses: String) {
+        if(updatedCorrectGuessesNum >= currentWordLength){
             //The player wins
             _uiState.update { currentState ->
             currentState.copy(
                     isGameWon = true,
                     score = updatedScore,
                 isGuessedLetterWrong = false,
-                correctGuesses = updatedCorrectGuesses,
-                correctLetters = updatedCorrectLetters,
-                correctCharToWrite = correctCharToWrite
+                correctGuessesNum = updatedCorrectGuessesNum,
+                userGuess = updatedUserGuess,
+                correctGuesses = updatedCorrectGuesses
 
             )
                 }
@@ -179,10 +173,10 @@ class GameViewModel : ViewModel() {
                 isGuessedLetterWrong = false,
                 isGuessedLetterRight = false,
                 isGuessedLetterEmpty = false,
+                correctGuessesNum = updatedCorrectGuessesNum,
+                userGuess = updatedUserGuess,
+                correctGuesses = updatedCorrectGuesses
 
-                correctGuesses = updatedCorrectGuesses,
-                correctLetters = updatedCorrectLetters,
-                correctCharToWrite = correctCharToWrite,
 
             )
 
@@ -190,19 +184,6 @@ class GameViewModel : ViewModel() {
             }
         }
     }
-
-
-
-/*
-                //isGuessedLetterWrong = false,
-                //currentCategoryForHiddenWord = pickRandomCategory(),
-                //currentHiddenWord = pickRandomWord(),
-                //currentHiddenWordLength = currentWordLength,
-                score = updatedScore,
-                correctGuesses = updatedCorrectGuesses
-                //isGameWon = true
-
- */
 
 
     //Updates the game state based on the player's life.
@@ -234,8 +215,12 @@ class GameViewModel : ViewModel() {
         _uiState.value = GameUiState(
             currentCategoryForHiddenWord = pickRandomCategory(),
             currentHiddenWord = pickRandomWord(),
-            currentHiddenWordLength = currentWordLength
+            currentHiddenWordLength = currentWordLength,
+
         )
+        updateUserGuess("")
+        lettersToReveal = ""
+
     }
 
 
