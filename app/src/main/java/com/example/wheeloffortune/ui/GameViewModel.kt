@@ -23,6 +23,7 @@ class GameViewModel : ViewModel() {
 
     private lateinit var currentCategory: String
     private lateinit var currentWord: String
+    private var currentResult: String = " "
 
 
 
@@ -58,6 +59,14 @@ class GameViewModel : ViewModel() {
         currentCategory = allCategories.random()
         return currentCategory
     }
+
+    //Picks a random result for the wheel button
+     fun spinWheel(): String {
+        currentResult = allResults.random()
+        updateWheel(currentResult)
+        return currentResult
+    }
+
 
     //Picks a random word based on the current category.
     private fun pickRandomWord(): String {
@@ -113,10 +122,11 @@ class GameViewModel : ViewModel() {
                 isGuessedLetterEmpty = false,
                 isGuessedLetterWrong = false,
                 isGuessedLetterRight = true,
-                //revealedLetter = userGuess
+                ableToSpin = true,
+                isClickable = false,
+                wheelResult = "Spin the Wheel"
+                //wheelResult = "Spin the wheel"
             ) }
-
-
 
 
 
@@ -126,7 +136,7 @@ class GameViewModel : ViewModel() {
             updatedCorrectGuessesNum = _uiState.value.correctGuessesNum.plus(currentWord.count{it == userGuess.first()})
 
             //Updates the amount of points a player gets based on the number of correct letters guessed.
-            updatedScore = _uiState.value.score.plus(scoreInc*(currentWord.count{it == userGuess.first()}))
+            updatedScore = _uiState.value.score.plus(currentResult.toInt()*(currentWord.count{it == userGuess.first()}))
 
             updatedUserGuess = _uiState.value.userGuess.plus(userGuess)
 
@@ -137,7 +147,11 @@ class GameViewModel : ViewModel() {
             _uiState.update { currentState -> currentState.copy(
                 isGuessedLetterEmpty = false,
                 isGuessedLetterWrong = true,
-                isGuessedLetterRight = false) }
+                isGuessedLetterRight = false,
+                ableToSpin = true,
+                isClickable = false,
+                wheelResult = "Spin the Wheel"
+            ) }
 
             // User's guess is incorrect, decrease life.
             val updatedLife = _uiState.value.life.minus(1)
@@ -146,6 +160,7 @@ class GameViewModel : ViewModel() {
             // Reset user guess
             updateUserGuess("")
         }
+
     }
 
 
@@ -186,6 +201,7 @@ class GameViewModel : ViewModel() {
     }
 
 
+
     //Updates the game state based on the player's life.
     private fun updateGameStateLife(updatedLife: Int) {
         if (updatedLife == 0) {
@@ -209,7 +225,33 @@ class GameViewModel : ViewModel() {
             }
         }
 
+    private fun updateWheel(currentResult: String) {
+        //The player has pressed the wheel button
 
+        if (currentResult == "Bankrupt! \n Spin again"){
+            _uiState.update { currentState ->
+                currentState.copy(
+                    wheelResult = currentResult,
+                    ableToSpin = true,
+                    score = 0,
+                    isClickable = false,
+
+                )
+            }
+        } else {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    wheelResult = currentResult,
+                    ableToSpin = false,
+                    isClickable = true
+
+                )
+        }
+        }
+
+
+
+    }
 
     fun resetGame() {
         _uiState.value = GameUiState(
@@ -218,8 +260,9 @@ class GameViewModel : ViewModel() {
             currentHiddenWordLength = currentWordLength,
 
         )
-        updateUserGuess("")
-        lettersToReveal = ""
+        //updateUserGuess("")
+        //lettersToReveal = ""
+        //userGuess = ""
 
     }
 

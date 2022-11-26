@@ -15,6 +15,11 @@ data class GameUiState(
     val correctGuesses: String = "",
     val userGuess: String = "",
 
+    val wheelResult: String = "Spin the Wheel",
+    val ableToSpin: Boolean = true,
+
+    var isClickable: Boolean = false
+
 
 
 

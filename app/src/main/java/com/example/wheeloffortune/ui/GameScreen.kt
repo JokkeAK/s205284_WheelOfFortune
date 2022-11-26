@@ -54,7 +54,7 @@ fun GameScreen(
             correctGuesses = gameUiState.correctGuesses
         )
 
-        GameWheel(correctGuesNum = gameUiState.correctGuessesNum)
+        GameWheelButton(result = gameUiState.wheelResult, ableToSpin = gameUiState.ableToSpin)
 
         GameStatus(
             life = gameUiState.life,
@@ -157,17 +157,51 @@ fun HiddenWord(
 }
 
 @Composable
-fun GameWheel(
-    result: String = "DKK 1000",
-    correctGuesNum: Int,
-    ) {
+fun GameWheelButton(
+    result: String,
+    ableToSpin: Boolean,
+    gameViewModel: GameViewModel = viewModel()
+) {
+    val gameUiState by gameViewModel.uiState.collectAsState()
+    var pressed by remember { mutableStateOf(false) }
+
+    Button(
+        onClick = { if(!pressed && ableToSpin) {
+            run {
+                gameViewModel.spinWheel()
+            }
+        }},
+        modifier = Modifier
+            .size(360.dp, 80.dp),
+        colors= ButtonDefaults.buttonColors(Color.Green),
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(1.dp, Color.Black),
+        elevation = ButtonDefaults.elevatedButtonElevation(
+            defaultElevation = 10.dp,
+            pressedElevation = 10.dp,
+            disabledElevation = 10.dp
+        )
+    )
+    {
+        Text(
+            text = result,
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            style = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = FontWeight.ExtraBold
+            )
+        )
+    }
+
+    /*
     Box(
         modifier = Modifier
             .size(360.dp, 80.dp)
             .background(Color.Green, shape = CircleShape)
     ) {
         Text(
-            text = result + " " + correctGuesNum,
+            text = result,
             color = Color.Black,
             style = TextStyle(
                 fontSize = 36.sp,
@@ -176,6 +210,10 @@ fun GameWheel(
             modifier = Modifier.align(Alignment.Center)
         )
     }
+
+     */
+
+
 }
 
 
@@ -267,25 +305,26 @@ fun GuessButton(
                 gameViewModel: GameViewModel = viewModel(),
                 ) {
 
-    //val gameUiState by gameViewModel.uiState.collectAsState()
+    val gameUiState by gameViewModel.uiState.collectAsState()
 
     var pressed by remember { mutableStateOf(false) }
     val color = if (pressed) Color.Gray else Color.Red
 
-    //if(gameUiState.isGameOver || gameUiState.isGameWon){
-    //    pressed = false
-    //}
+    if(gameUiState.isGameOver || gameUiState.isGameWon){
+        pressed = false
+    }
 
 
 
     Button(
-        onClick = { if(!pressed) {
+        onClick = { if(!pressed && gameUiState.isClickable) {
             gameViewModel.userGuess = text
 
             run {
                 gameViewModel.checkUserGuess()
             }
-            pressed = !pressed} },
+            pressed = !pressed
+        gameUiState.isClickable = false } },
         modifier = Modifier
             .width(width = 35.dp)
             .height(height = 35.dp),
