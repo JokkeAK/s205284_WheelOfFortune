@@ -1,6 +1,6 @@
 package com.example.wheeloffortune.ui
 
-//Data class that represents the game UI state
+//Data class that represents the game UI state.
 data class GameUIState(
     //UI state for the hidden word.
     val currentHiddenWord: String = "",
@@ -25,5 +25,5 @@ data class GameUIState(
     //UI state for whether the wheel can be spun.
     val readyToSpin: Boolean = true,
     //UI state for whether the letter buttons are clickable or not.
-    val isClickable: Boolean = false,
+    val isClickable: Boolean = false
 )

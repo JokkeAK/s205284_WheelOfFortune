@@ -15,7 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wheeloffortune.ui.GameViewModel
 import com.example.wheeloffortune.ui.elements.*
 
-//The only frame in the app that shows the entire UI the app has to offer.
+//The only screen in the app. Shows the entire UI the app has to offer.
 @Composable
 fun GameScreen(
     gameViewModel: GameViewModel = viewModel()
