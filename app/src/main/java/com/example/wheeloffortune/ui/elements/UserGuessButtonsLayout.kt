@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 
-
+//Composable that takes the UserGuessButton and makes a button for each
+//letter in the English alphabet.
 @Composable
 fun UserGuessButtonsLayout() {
+
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         UserGuessButton("A")
         UserGuessButton("B")

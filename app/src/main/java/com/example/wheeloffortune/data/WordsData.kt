@@ -1,9 +1,6 @@
 package com.example.wheeloffortune.data
 
-//How many points you get for a correct letter.
-const val scoreInc = 500
-
-//All of the possible words. Hard coded for now.
+//All of the possible words.
 val animalWords: Set<String> =
     setOf(
         "BEAR",
@@ -22,7 +19,7 @@ val fruitWords: Set<String> =
     setOf(
         "APPLE",
         "PEAR",
-        "ORANGES"
+        "ORANGE"
     )
 
 val vegetablesWords: Set<String> =

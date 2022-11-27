@@ -7,25 +7,30 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 
-
+//Composable for the alert dialog box when a user has lost.
+//The user can exit the app with this or restart the game.
 @Composable
- fun GameOverDialog(
+fun GameOverDialog(
     score: Int,
-    onPlayAgain: () -> Unit,
-    modifier: Modifier = Modifier
+    onPlayAgain: () -> Unit
 ) {
     val activity = (LocalContext.current as Activity)
 
     AlertDialog(
-        onDismissRequest = {
-            // Dismiss the dialog when the user clicks outside the dialog or on the back
-            // button. If you want to disable that functionality, simply use an empty
-            // onCloseRequest.
+        onDismissRequest = {},
+        title = {
+            Text(
+                "Too bad - Game over!",
+                style = TextStyle(
+                    fontSize = 22.sp
+                )
+            )
         },
-        title = { Text("Too bad - Game over!") },
         text = { Text("You got " + score + " points before you lost all your lives.") },
-        modifier = modifier,
+        modifier = Modifier,
         dismissButton = {
             TextButton(
                 onClick = {

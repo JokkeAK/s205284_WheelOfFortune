@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 
+//Composable for the category of the hidden word.
 @Composable
 fun HiddenWordCategory(
     currentCategoryForHiddenWord: String,

@@ -7,24 +7,29 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 
-
+//Composable for the alert dialog box when a user has won.
+//The user can exit the app with this or restart the game.
 @Composable
- fun GameWonDialog(
+fun GameWonDialog(
     life: Int,
     score: Int,
-    onPlayAgain: () -> Unit,
-    modifier: Modifier = Modifier
+    onPlayAgain: () -> Unit
 ) {
     val activity = (LocalContext.current as Activity)
 
     AlertDialog(
-        onDismissRequest = {
-            // Dismiss the dialog when the user clicks outside the dialog or on the back
-            // button. If you want to disable that functionality, simply use an empty
-            // onCloseRequest.
+        onDismissRequest = {},
+        title = {
+            Text(
+                "Congratulations - You won!",
+                style = TextStyle(
+                    fontSize = 22.sp
+                )
+            )
         },
-        title = { Text("Congratulations - You won!") },
         text = {
             Text(
                 if (life > 1) {
@@ -34,7 +39,7 @@ import androidx.compose.ui.platform.LocalContext
                 },
             )
         },
-        modifier = modifier,
+        modifier = Modifier,
         dismissButton = {
             TextButton(
                 onClick = {

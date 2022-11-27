@@ -16,7 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
+//Composable for the hidden word to be displayed.
 @Composable
 fun HiddenWord(
     currentHiddenWord: String,
@@ -35,7 +35,8 @@ fun HiddenWord(
 
                 )
             {
-
+                //If a letter in the hidden word is also in the string of correctGuesses
+                //the letter will be visible (alpha 1F) in the appropriate box.
                 if (char in correctGuesses) {
                     Text(
                         text = char.toString(),
@@ -47,11 +48,12 @@ fun HiddenWord(
                         )
                     )
                 } else {
+                    //Otherwise the letter will be invisible (alpha 0F) in the appropriate box.
                     Text(
                         text = char.toString(),
                         color = Color.Black,
                         modifier = Modifier
-                            .alpha(0.5F),
+                            .alpha(0F),
                         style = TextStyle(
                             fontSize = 36.sp
                         )

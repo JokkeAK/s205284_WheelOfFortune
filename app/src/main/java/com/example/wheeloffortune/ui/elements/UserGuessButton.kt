@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wheeloffortune.ui.GameViewModel
 
+//Composable for the button that, when pressed, its text is used as the user guess for the hidden word.
 @Composable
 fun UserGuessButton(
     text: String,
@@ -27,23 +28,29 @@ fun UserGuessButton(
 
     val gameUiState by gameViewModel.uiState.collectAsState()
 
-    var pressed by remember { mutableStateOf(false) }
-    val color = if (pressed) Color.Gray else Color.Red
+    //Boolean to keep track of the button having been pressed.
+    var used by remember { mutableStateOf(false) }
 
+    //Color of the button.
+    val color = if (used) Color.Gray else Color.Red
+
+    //Resets the state of the button when the current game is over.
     if (gameUiState.isGameOver || gameUiState.isGameWon) {
-        pressed = false
+        used = false
     }
 
 
     Button(
         onClick = {
-            if (!pressed && gameUiState.isClickable) {
+            //When the button is clicked while it is clickable and has not been used
+            //then assign userGuess in gameViewModel to the text of the button, run checkUserGuess() and
+            //make "used" true.
+            if (!used && gameUiState.isClickable) {
                 gameViewModel.userGuess = text
-
                 run {
                     gameViewModel.checkUserGuess()
                 }
-                pressed = !pressed
+                used = true
 
             }
         },
@@ -57,7 +64,7 @@ fun UserGuessButton(
         ),
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(1.dp, Color.Black),
-        enabled = !pressed,
+        enabled = !used,
         elevation = ButtonDefaults.elevatedButtonElevation(
             defaultElevation = 4.dp,
             pressedElevation = 12.dp,
