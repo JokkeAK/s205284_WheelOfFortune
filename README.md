@@ -4,6 +4,8 @@ This is the app made for the individual project for course 62550, User experienc
 
 Created by student: s205284, Joakim Anker Kruse.
 
+The link to the GitHub repository: https://github.com/JokkeAK/WheelOfFortune 
+
 ## Requirements for assignment:
 1. The game rules listed should be implemented.
 2. The game should be able to be played again when finished.
