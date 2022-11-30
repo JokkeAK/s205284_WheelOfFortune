@@ -2,6 +2,8 @@
 
 This is the app made for the individual project for course 62550, User experience and mobile application development Fall 22. It is a modified game of Wheel of Fortune.
 
+It does not currently support all screen sizes. Has been tested with an emulated phone with 5.5 inches of screen size.
+
 Created by student: s205284, Joakim Anker Kruse.
 
 The link to the GitHub repository: https://github.com/JokkeAK/WheelOfFortune 

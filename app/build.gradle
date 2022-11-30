@@ -6,7 +6,7 @@ plugins {
 android {
 
     defaultConfig {
-        applicationId "com.example.materialepladsenappui"
+        applicationId "com.example.wheeloffortune"
         minSdk 28
         targetSdk 33
         versionCode 1

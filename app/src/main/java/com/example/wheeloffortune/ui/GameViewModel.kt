@@ -99,7 +99,7 @@ class GameViewModel : ViewModel() {
             }
         } else {
             //Else the wheel result is the current result, wheel cannot be spun,
-            //letter button can be clicked.
+            //letter buttons can be clicked.
             _uiState.update { currentState ->
                 currentState.copy(
                     wheelResult = currentResult,
@@ -129,7 +129,7 @@ class GameViewModel : ViewModel() {
             //Guess is correct, life does not change.
             updatedLife = _uiState.value.life
 
-            //Guess is correct and the amount of correct guesses is increased by 1.
+            //Guess is correct and the amount of correct guesses is by the amount of times the guessed letter exists in the hidden word.
             updatedCorrectGuessesNum =
                 _uiState.value.correctGuessesNum.plus(currentWord.count { it == userGuess.first() })
 
